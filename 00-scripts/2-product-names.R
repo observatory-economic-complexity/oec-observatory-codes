@@ -83,13 +83,13 @@ for (i in 1:length(rev)) {
     filter(nchar(id) >= 6) %>%
     mutate(group_id = substr(id, 1, 2)) %>%
     mutate(id = substr(id, 3, nchar(id))) %>%
-    rename(product_name = name, hs = id) %>%
+    rename(product_name = name) %>%
     left_join(hs_groups) %>%
     mutate(
       product_name = iconv(product_name, from = "", to = "ASCII", sub = "byte"),
       group_name = iconv(group_name, from = "", to = "ASCII", sub = "byte")
     ) %>%
-    select(product_name, hs, group_name, group_id, color)
+    select(product_name, id, group_name, group_id, color)
   
   save(
     hs_product_names,
@@ -115,16 +115,16 @@ sitc_product_names <- sitc %>%
   filter(nchar(id) >= 6) %>%
   mutate(group_id = substr(id, 1, 2)) %>%
   mutate(id = substr(id, 3, nchar(id))) %>%
-  rename(product_name = name, sitc = id) %>%
+  rename(product_name = name) %>%
   left_join(sitc_groups) %>%
   mutate(
     product_name = iconv(product_name, from = "", to = "ASCII", sub = "byte"),
     group_name = iconv(group_name, from = "", to = "ASCII", sub = "byte")
   ) %>%
-  select(product_name, sitc, group_name, group_id, color)
+  select(product_name, id, group_name, group_id, color)
 
 save(
-  hs92_product_names,
+  sitc_product_names,
   file = paste0(product_dir_tidy, "sitc-rev2-product-names.RData"),
   compress = "xz"
 )
